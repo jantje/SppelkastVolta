@@ -7,8 +7,7 @@
 #pragma once
 #include "Arduino.h"
 #define NUM_ANSWERS 4
-//the time the lights need to turn on at boot time
-#define SETUP_LIGHT_ON_TIME 300
+
 
 class Vraag {
 private:

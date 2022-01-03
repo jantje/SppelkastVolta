@@ -6,7 +6,8 @@
  */
 
 #include "Vraag.h"
-extern unsigned long loopMillis;
+#include "globals.h"
+
 
 Vraag::~Vraag() {
 	// TODO Auto-generated destructor stub
@@ -32,6 +33,10 @@ void Vraag::setup() {
 		digitalWrite(myAnswerPins[curPin], LOW);
 	}
 	pinMode(myResultPin, INPUT);
+	digitalWrite(myLightPin,HIGH);
+	delay(SETUP_LIGHT_ON_TIME);
+	digitalWrite(myLightPin,LOW);
+
 }
 
 

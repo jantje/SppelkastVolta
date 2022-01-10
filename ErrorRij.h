@@ -10,19 +10,28 @@
 #include "Error.h"
 #include "globals.h"
 
-#define NUM_ERROS 4
+
+
+typedef enum
+{
+    errorOff,errorShowError
+} ERROR_STATE;
 
 class ErrorRij {
 	private:
 	Error* myErrors[NUM_ERROS];
-	uint8_t myCurrentError;
-	boolean myBlink;
-	boolean myNewBlink;
-	unsigned long myblinkPreviousMillis;
+	uint8_t myCurrentError=0;
+	ERROR_STATE myState=errorShowError;
+	ERROR_STATE myNewState=errorOff;
+	unsigned long myblinkPreviousMillis=0;
+	void switchToNewState();
 public:
 	ErrorRij(Error* err1,Error* err2,Error* err3,Error* err4);
 	virtual ~ErrorRij();
 	void setup();
 	void loop();
-	void blink(boolean blink){myNewBlink=blink;};
+	void showErrorNumber(){myNewState=errorShowError;};
+	void off(){myNewState=errorOff;};
+	uint8_t getExpectedAnswer(uint8_t questionIndex);
+	void nextError();
 };

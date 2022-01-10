@@ -9,19 +9,27 @@
 #pragma once
 #include "Arduino.h"
 
+typedef enum
+{
+    bakenOff,bakenBlinkRed, bakenGreenOn
+} BAKEN_STATE;
+
 class Baken {
 private:
 	uint8_t myGreenPin;
 	uint8_t myRedPin;
-	boolean myBlinkRed;
-	boolean  mynewBlinkRed;
 	uint8_t myRedLedSTate;
 	unsigned long myblinkRedPreviousMillis;
+	BAKEN_STATE myState=bakenBlinkRed;
+	BAKEN_STATE myNewState=bakenOff;
+	void switchToNewState();
 public:
 	Baken(uint8_t groenPin,uint8_t roodPin);
 	virtual ~Baken();
 	void setup();
 	void loop();
-	void blinkRed(boolean newBlinkRed){ mynewBlinkRed=newBlinkRed;};
+	void blinkRed(){ myNewState=bakenBlinkRed;};
+	void off(){ myNewState=bakenOff;};
+	void green(){ myNewState=bakenGreenOn;};
 };
 

@@ -7,17 +7,39 @@
 #pragma once
 #include "Arduino.h"
 #include "Vraag.h"
+#include "ErrorRij.h"
+#include "globals.h"
 
-#define NUM_QUESTIONS 4
+extern ErrorRij errors;
+
+typedef enum {
+    vragenOff, vragenOn, showingResult, pointingDown
+} VRAGEN_STATE;
 
 class Vragen {
 private:
-	Vraag* myQuestions[NUM_QUESTIONS];
+    Vraag *myQuestions[NUM_QUESTIONS];
+    VRAGEN_STATE myState = showingResult;
+    VRAGEN_STATE myNewState = vragenOff;
+    void switchToNewState();
 
 public:
-	Vragen(Vraag* vraagA,Vraag* vraagB,Vraag* vraagC,Vraag* vraagD);
-	virtual ~Vragen();
-	void loop();
-	void setup();
+    Vragen(Vraag *vraagA, Vraag *vraagB, Vraag *vraagC, Vraag *vraagD);
+    virtual ~Vragen();
+    void loop();
+    void setup();
+    void pointDown() {
+        myNewState = pointingDown;
+    }
+    void off() {
+        myNewState = vragenOff;
+    }
+    void on() {
+        myNewState = vragenOn;
+    }
+    void showResult() {
+        myNewState = showingResult;
+    }
+    boolean isSuccess();
 };
 

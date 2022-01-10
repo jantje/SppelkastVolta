@@ -11,8 +11,6 @@
 Baken::Baken(uint8_t groenPin, uint8_t roodPin) {
     myGreenPin = groenPin;
     myRedPin = roodPin;
-    myBlinkRed = false;
-    mynewBlinkRed = false;
     myRedLedSTate = LOW;
     myblinkRedPreviousMillis = 0;
 }
@@ -45,20 +43,46 @@ uint8_t calcLedState(unsigned long *previousMillis, uint16_t onTime, uint16_t in
 }
 
 void Baken::loop() {
-    if (mynewBlinkRed != myBlinkRed) {
-        myBlinkRed = mynewBlinkRed;
-        if (!myBlinkRed) {
-            myRedLedSTate = LOW;
-            digitalWrite(myRedPin, myRedLedSTate);
-        }
-        myblinkRedPreviousMillis = loopMillis;
+    if (myNewState != myState) {
+        switchToNewState();
     }
-    if (myBlinkRed) {
+    switch (myState) {
+    case bakenOff:
+        return;
+    case bakenBlinkRed:{
         uint8_t newLedState = calcLedState(&myblinkRedPreviousMillis, BAKEN_ROOD_BLINK_ON_TIME, BAKEN_ROOD_BLINK_INTERVAL_TIME);
         if (newLedState != myRedLedSTate) {
             myRedLedSTate = newLedState;
             digitalWrite(myRedPin, myRedLedSTate);
         }
+        return;
     }
+    case bakenGreenOn:
+        return;
+    }
+}
 
+void Baken::switchToNewState() {
+    myState = myNewState;
+    switch (myState) {
+    case bakenOff:
+        myRedLedSTate = LOW;
+        digitalWrite(myRedPin, myRedLedSTate);
+        digitalWrite(myGreenPin, LOW);
+        Serial.println("Baken switching to state Off");
+        return;
+    case bakenBlinkRed:
+        myRedLedSTate = HIGH;
+        digitalWrite(myRedPin, myRedLedSTate);
+        digitalWrite(myGreenPin, LOW);
+        myblinkRedPreviousMillis = loopMillis;
+        Serial.println("Baken switching to state blink red");
+        return;
+    case bakenGreenOn:
+        myRedLedSTate = LOW;
+        digitalWrite(myRedPin, myRedLedSTate);
+        digitalWrite(myGreenPin, HIGH);
+        Serial.println("Baken switching to state Green on");
+        return;
+    }
 }

@@ -44,7 +44,7 @@ void Vraag::loop() {
     if (myNewState != myState) {
         switchToNewState();
     }
-    if (loopMillis - myLastAction > 1000) {
+    if (loopMillis - myLastAction > 10) {
         myLastAction = loopMillis;
         if (digitalRead(myResultPin) == HIGH) {
             myNewSelectedAnswer += 1 << (NUM_ANSWERS - 1 - myCurTestedPin);

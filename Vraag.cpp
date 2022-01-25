@@ -68,7 +68,7 @@ void Vraag::loop() {
     }
     switch (myState) {
     case QuestionShowingResult:
-        if (mySelectedAnswer == myNewSelectedAnswer) {
+        if (mySelectedAnswer == myExpectedAnswer) {
             myNewLedState = HIGH;
         } else {
             myNewLedState = LOW;

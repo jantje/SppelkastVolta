@@ -29,11 +29,11 @@ void ErrorRij::loop() {
     }
     switch (myState){
     case errorOff:
-        return;
+        break;
     case errorShowError:
         uint8_t newLedState = calcLedState(&myblinkPreviousMillis, ERROR_BLINK_ON_TIME, ERROR_BLINK_INTERVAL_TIME);
         myErrors[myCurrentError]->setLedState(newLedState);
-        return;
+        break;
     }
 
     for (int curError = 0; curError < NUM_ERROS; curError++) {

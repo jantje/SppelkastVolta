@@ -65,7 +65,7 @@ void Brains::loopShowingResult() {
 }
 
 void Brains::loopSolvingPuzzle() {
-    if (myMainSwitch.getMedian() == false) {
+    if (myMainSwitch.getMedian() == true) {
         myNewState = brainShowingResult;
     }
 }

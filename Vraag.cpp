@@ -46,8 +46,6 @@ void Vraag::loop() {
     }
     if (loopMillis - myLastAction > 10) {
         myLastAction = loopMillis;
-        digitalWrite(myAnswerPins[myCurTestedPin], HIGH);
-        delay(10);
         if (digitalRead(myResultPin) == HIGH) {
             myNewSelectedAnswer += 1 << (NUM_ANSWERS - 1 - myCurTestedPin);
         }

@@ -39,7 +39,7 @@ void Brains::loopShowingError() {
             digitalWrite(myAllarmPin, myAlarmPinState);
         }
     }
-    if (myMainSwitch.getMedian() == true) {
+    if (myMainSwitch.getMedian() == false) {
         if (myAlarmPinState == HIGH) {
             myAlarmPinState = LOW;
             digitalWrite(myAllarmPin, myAlarmPinState);

@@ -66,6 +66,9 @@ uint8_t ErrorRij::getExpectedAnswer(uint8_t questionIndex) {
 }
 
 void ErrorRij::nextError() {
+    for (int curError = 0; curError < NUM_ERROS; curError++) {
+        myErrors[curError]->setLedState(LOW);
+    }
     myCurrentError++;
     if(myCurrentError>=NUM_ERROS){
         myCurrentError=0;

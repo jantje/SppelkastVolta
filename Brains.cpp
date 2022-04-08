@@ -100,9 +100,10 @@ void Brains::switchToNewState() {
             baken.green();
             vragenHoek.on();
             mySuccessPinState = HIGH;
+            errors.nextError();
             digitalWrite(mySuccessPin, mySuccessPinState);
         }
-        errors.nextError();
+
         Serial.println("Brains switching to state showing result");
         return;
     }

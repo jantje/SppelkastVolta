@@ -33,17 +33,8 @@ void Brains::loopCheckingBoard() {
 }
 
 void Brains::loopShowingError() {
-    if (myAlarmPinState == HIGH) {
-        if (loopMillis - myLastStateChange > ALARM_TRIGGER_TIME) {
-            myAlarmPinState = LOW;
-            digitalWrite(myAllarmPin, myAlarmPinState);
-        }
-    }
     if (myMainSwitch.getMedian() == false) {
-        if (myAlarmPinState == HIGH) {
-            myAlarmPinState = LOW;
-            digitalWrite(myAllarmPin, myAlarmPinState);
-        }
+        turnAlarmOff();
         myNewState = brainSolvingPuzzel;
     }
 }
@@ -51,15 +42,16 @@ void Brains::loopShowingError() {
 void Brains::loopShowingResult() {
     if (mySuccessPinState == HIGH) {
         if (loopMillis - myLastStateChange > SUCCESS_TRIGGER_TIME) {
-            mySuccessPinState = LOW;
-            digitalWrite(mySuccessPin, mySuccessPinState);
+            turnSuccessOff();
+        }
+    }
+    if (myAlarmPinState == HIGH) {
+        if (loopMillis - myLastStateChange > ALARM_TRIGGER_TIME) {
+            turnAlarmOff();
         }
     }
     if (loopMillis - myLastStateChange > SHOWING_RESULT_DURRATION) {
-        if (mySuccessPinState == HIGH) {
-            mySuccessPinState = LOW;
-            digitalWrite(mySuccessPin, mySuccessPinState);
-        }
+
         myNewState = brainShowingError;
     }
 }
@@ -82,11 +74,11 @@ void Brains::switchToNewState() {
         Serial.println("Brains switching to state board cheking");
         return;
     case brainShowingError:
+        turnSuccessOff();
+        turnAlarmOff();
         baken.blinkRed();
         errors.showErrorNumber();
         vragenHoek.off();
-        myAlarmPinState = HIGH;
-        digitalWrite(myAllarmPin, myAlarmPinState);
         Serial.println("Brains switching to state showing error.");
         return;
     case brainSolvingPuzzel:
@@ -99,9 +91,10 @@ void Brains::switchToNewState() {
         if(vragenHoek.isSuccess()){
             baken.green();
             vragenHoek.on();
-            mySuccessPinState = HIGH;
+            turnSuccessOn();
             errors.nextError();
-            digitalWrite(mySuccessPin, mySuccessPinState);
+        }else{
+            turnAlarmOn();
         }
 
         Serial.println("Brains switching to state showing result");
@@ -130,5 +123,27 @@ void Brains::loop() {
     case brainSolvingPuzzel:
         loopSolvingPuzzle();
         return;
+    }
+}
+
+void Brains::turnAlarmOn(){
+    myAlarmPinState = HIGH;
+    digitalWrite(myAllarmPin, myAlarmPinState);
+}
+void Brains::turnAlarmOff(){
+    if (myAlarmPinState == HIGH) {
+        myAlarmPinState = LOW;
+        digitalWrite(myAllarmPin, myAlarmPinState);
+    }
+}
+
+void Brains::turnSuccessOn(){
+    mySuccessPinState = HIGH;
+    digitalWrite(mySuccessPin, mySuccessPinState);
+}
+void Brains::turnSuccessOff(){
+    if (mySuccessPinState == HIGH) {
+        mySuccessPinState = LOW;
+        digitalWrite(mySuccessPin, mySuccessPinState);
     }
 }

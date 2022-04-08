@@ -38,6 +38,10 @@ private:
     void switchToNewState();
     void setNewState(BRAIN_STATE newBoardState){myNewState=newBoardState;};
     FastRunningMedian<bool, 9, false> myMainSwitch;
+    void turnAlarmOff();
+    void turnAlarmOn();
+    void turnSuccessOn();
+    void turnSuccessOff();
 public:
 	Brains(uint8_t mainSwitchPin,uint8_t successPin,uint8_t allarmPin);
 	virtual ~Brains();

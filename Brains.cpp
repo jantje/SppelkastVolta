@@ -51,7 +51,7 @@ void Brains::loopShowingResult() {
         }
     }
     if (loopMillis - myLastStateChange > SHOWING_RESULT_DURRATION) {
-
+        errors.nextError();
         myNewState = brainShowingError;
     }
 }
@@ -92,7 +92,7 @@ void Brains::switchToNewState() {
             baken.green();
             vragenHoek.on();
             turnSuccessOn();
-            errors.nextError();
+
         }else{
             turnAlarmOn();
         }

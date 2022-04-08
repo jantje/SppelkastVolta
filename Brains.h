@@ -42,6 +42,7 @@ private:
     void turnAlarmOn();
     void turnSuccessOn();
     void turnSuccessOff();
+    boolean myMoveToNextError=false;
 public:
 	Brains(uint8_t mainSwitchPin,uint8_t successPin,uint8_t allarmPin);
 	virtual ~Brains();
